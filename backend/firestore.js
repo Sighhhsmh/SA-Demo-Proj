@@ -1,9 +1,7 @@
 const admin =  require("firebase-admin");
-const { readFileSync } = require("fs");
+//const { readFileSync } = require("fs");
 
-const serviceAccount = JSON.parse(
-  readFileSync("./sso-demo-securityarchitecture-firebase-adminsdk-fbsvc-f67f14456d.json", "utf8")
-);
+const serviceAccount = JSON.parse(process.env['Firebase-Service-Account']);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
