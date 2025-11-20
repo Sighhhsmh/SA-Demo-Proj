@@ -1,5 +1,5 @@
 const admin =  require("firebase-admin");
-//const { readFileSync } = require("fs");
+require('dotenv').config();
 
 const serviceAccount = JSON.parse(process.env['Firebase-Service-Account']);
 
@@ -10,4 +10,5 @@ admin.initializeApp({
 const db = admin.firestore();
 
 module.exports = db;
+
 
