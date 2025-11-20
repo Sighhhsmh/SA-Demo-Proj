@@ -36,8 +36,8 @@ app.use(passport.session());
 
 // (OIDC / Google IdP) Google OAuth Strategy
 passport.use(new GoogleStrategy({
-    clientID: process.env['Client-ID'],
-    clientSecret: process.env['Client-Secret'],
+    clientID: process.env['Client_ID'],
+    clientSecret: process.env['Client_Secret'],
     callbackURL: "http://localhost:3000/auth/google/callback"
 }, async(accessToken, refreshToken, profile, done) => {
     try {
@@ -479,4 +479,5 @@ app.listen(PORT, () => console.log("Server running on port", PORT));
     //     stats: statsData,
     //     classes: classData,
     //     gradingQueue: gradingData
+
     // });
