@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Portal Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="login-page-container">
+        <div class="carousel-container">
+            <div id="schoolCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="5000">
+                        <img src="https://images.unsplash.com/photo-1666243035395-9b7853cecc05?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1074" class="d-block w-100" alt="University Campus">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Welcome to Our Campus</h5>
+                            <p>Excellence in education and research.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="https://images.unsplash.com/photo-1721046013656-0a0980264689?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170" class="d-block w-100" alt="Students studying in library">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>State-of-the-Art Facilities</h5>
+                            <p>Resources to help you succeed.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <img src="https://images.unsplash.com/photo-1590012314607-cda9d9b699ae?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1171" class="d-block w-100" alt="Graduation ceremony">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Your Future Starts Here</h5>
+                            <p>Join a community of innovators.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="login-form-container">
+            <div class="login-form-wrapper">
+                
+                <div class="logo-container">
+                    <img src="https://sp.hamdard.edu.pk/public/assets/images/favicon.png" alt="School Logo" class="school-logo">
+                </div>
+                
+                <h2>School Portal</h2>
+                <p class="text-muted">Welcome back! Please sign in to continue.</p>
+
+                <form>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email / Username</label>
+                        <input type="email" class="form-control" id="email" placeholder="school.email@example.com" disabled>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="••••••••" disabled>
+                    </div>
+
+                    <div class="separator">
+                        <span>or</span>
+                    </div>
+                    
+                    <a href="http://localhost:3000/auth/google" class="btn btn-google w-100">
+                        <svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20px" height="20px">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.42-4.55H24v8.51h12.8c-.57 3.03-2.31 5.6-4.84 7.38l7.38 5.74C44.97 38.91 46.98 32.27 46.98 24.55z"></path>
+                            <path fill="#34A853" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                            <path fill="#FBBC05" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.38-5.74c-2.18 1.45-4.96 2.3-8.51 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                            <path fill="none" d="M0 0h48v48H0z"></path>
+                        </svg>
+                        Sign in with Google
+                    </a>
+                </form>
+
+                <div class="auth-note">
+                    <p>Please use your official school Google account.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

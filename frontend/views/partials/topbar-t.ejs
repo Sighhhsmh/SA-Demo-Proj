@@ -1,0 +1,29 @@
+<header class="topbar">
+    <div class="welcome-message">
+        <h4>Welcome back, <%= user.name %>!</h4>
+        <p class="text-muted">You have <%= user.assignmentsToGrade %> assignments to grade.</p>
+    </div>
+    <div class="topbar-right">
+        <form class="search-bar">
+            <input type="text" class="form-control" placeholder="Search students, classes...">
+            <i class="bi bi-search"></i>
+        </form>
+        <div class="notification-icon">
+            <i class="bi bi-bell-fill"></i>
+            <% if (user.notificationCount > 0) { %>
+                <span class="badge bg-danger rounded-pill"><%= user.notificationCount %></span>
+            <% } %>
+        </div>
+        <div class="dropdown profile-dropdown">
+            <button class="btn dropdown-toggle" type="button" id="profileMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="<%= user.profileImgUrl %>" alt="Profile" class="profile-img">
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileMenu">
+                <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> My Profile</a></li>
+                <li><a class="dropdown-item" href="/settings"><i class="bi bi-gear"></i> Settings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="/logout"><i class="bi bi-box-arrow-left"></i> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</header>

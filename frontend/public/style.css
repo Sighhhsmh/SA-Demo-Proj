@@ -1,0 +1,188 @@
+/* General Styling */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden; /* Prevents scrolling on the main page */
+}
+
+.login-page-container {
+    display: grid;
+    grid-template-columns: 55% 45%; /* 55% for carousel, 45% for form */
+    height: 100vh;
+}
+
+/* --- Carousel Side --- */
+.carousel-container {
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+#schoolCarousel {
+    height: 100%;
+}
+
+.carousel-inner, .carousel-item {
+    height: 100%;
+}
+
+.carousel-item img {
+    height: 100%;
+    object-fit: cover; /* Ensures image covers the area without distortion */
+    object-position: center;
+}
+
+/* Dark overlay for better text contrast on carousel captions */
+.carousel-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.carousel-caption {
+    z-index: 10; /* Ensure caption is above the overlay */
+    bottom: 3rem;
+}
+
+.carousel-caption h5 {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+/* --- Login Form Side --- */
+.login-form-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    height: 100vh;
+    overflow-y: auto; /* Allow scrolling on form side if content overflows */
+}
+
+.login-form-wrapper {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.school-logo {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.login-form-wrapper h2 {
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.login-form-wrapper .text-muted {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Styling for the disabled fields */
+.form-control:disabled, .form-control[readonly] {
+    background-color: #e9ecef; /* Greyed-out background */
+    opacity: 0.7;
+    cursor: not-allowed; /* Show "not allowed" cursor */
+}
+
+/* "Or" Separator */
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #aaa;
+    margin: 1.5rem 0;
+}
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+}
+.separator span {
+    padding: 0 1rem;
+}
+
+/* Google Sign-In Button */
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    color: #444;
+    font-weight: 500;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.btn-google:hover {
+    background-color: #f8f8f8;
+    border-color: #ccc;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.auth-note {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.auth-note p {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 991.98px) {
+    .login-page-container {
+        grid-template-columns: 1fr; /* Stack columns */
+    }
+
+    .carousel-container {
+        height: 40vh; /* Make carousel shorter */
+        display: none; /* Or hide it completely on mobile */
+    }
+
+    .login-form-container {
+        height: 100vh; /* Take full height */
+        align-items: flex-start; /* Align form to top */
+        padding-top: 4rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .login-form-wrapper {
+        padding: 2rem;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+    }
+    .login-form-container {
+        background-color: #ffffff;
+        padding-top: 2rem;
+    }
+}

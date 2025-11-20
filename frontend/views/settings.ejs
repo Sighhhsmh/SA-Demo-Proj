@@ -1,0 +1,265 @@
+<%- include('partials/header') %>
+
+<% if (user.role === 'admin') { %>
+    <%- include('partials/sidebar-t', { currentPage: 'settings' }) %>
+<% } else { %>
+    <%- include('partials/sidebar', { currentPage: 'settings' }) %>
+<% } %>
+
+
+<div class="main-content">
+    
+    <header class="topbar">
+        <div class="welcome-message">
+            <h4>Settings</h4>
+            <p class="text-muted">Manage your account and security settings.</p>
+        </div>
+        <div class="topbar-right">
+            <div class="dropdown profile-dropdown">
+                <button class="btn dropdown-toggle" type="button" id="profileMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="<%= user.displayPicture %>" alt="Profile" class="profile-img">
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileMenu">
+                    <li><a class="dropdown-item" href="/profile"><i class="bi bi-person"></i> My Profile</a></li>
+                    <li><a class="dropdown-item" href="/settings"><i class="bi bi-gear"></i> Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="/logout"><i class="bi bi-box-arrow-left"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main class="content-area">
+
+        <ul class="nav nav-tabs mb-4" id="settingsTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button" role="tab" aria-controls="security" aria-selected="true">Security</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications" type="button" role="tab" aria-controls="notifications" aria-selected="false">Notifications</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="settingsTabContent">
+            
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="card settings-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Profile Settings</h5>
+                        <p>Profile settings would go here (e.g., change name, profile picture, etc.)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade show active" id="security" role="tabpanel" aria-labelledby="security-tab">
+                
+                <div class="card settings-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Two-Factor Authentication (2FA)</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <div id="disabled-view" class="text-center p-3" <%- !user.totp.enabled ? '' : 'style="display: none;"' %>>
+                            <i class="bi bi-shield-x auth-state-icon icon-disabled"></i>
+                            <h4>2FA is Not Enabled</h4>
+                            <p class="text-muted">Add an extra layer of security to your account using Google Authenticator or a similar TOTP app.</p>
+                            <a href="#" class="btn btn-primary" id="start-setup-btn">Enable 2-Factor Authentication</a>
+                        </div>
+
+                        <div id="setup-flow" style="display: none;">
+                            <h4>Enable 2-Factor Authentication</h4>
+                            <hr>
+                            <p class="mb-2"><strong>Step 1: Scan the QR code</strong></p>
+                            <p class="text-muted small">Use your authenticator app (like Google Authenticator) to scan the code below.</p>
+                            
+                            <img src="<%= user.totp.qrCodeUrl %>" alt="QR Code" class="qr-code d-block mx-auto">
+                            
+                            <p class="text-center small">Can't scan the code?</p>
+                            
+                            <div class="manual-key-group mb-4">
+                                <label class="form-label">Enter this setup key manually:</label>
+                                <p class="manual-key-code"><%= user.totp.manualKey %></p>
+                            </div>
+
+                            <p class="mb-2"><strong>Step 2: Verify your app</strong></p>
+                            <p class="text-muted small">Enter the 6-digit code from your authenticator app to confirm setup.</p>
+                            
+                            <form id="verify-form">
+                                <div class="mb-3">
+                                    <label for="totp-code" class="form-label">Verification Code</label>
+                                    <input name="otp" type="text" inputmode="numeric" pattern="[0-9]*" class="form-control form-control-lg" id="totp-code" placeholder="123 456" maxlength="6" required>
+                                </div>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-secondary" id="cancel-setup-btn">Cancel</button>
+                                    <button type="submit" class="btn btn-primary" id="verify-and-enable-btn">Verify & Enable</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div id="enabled-view" class="text-center p-3" <%- user.totp.enabled ? '' : 'style="display: none;"' %>>
+                            <i class="bi bi-shield-lock-fill auth-state-icon icon-enabled"></i>
+                            <h4>2FA is Enabled</h4>
+                            <p class="text-muted">Your account is protected with two-factor authentication.</p>
+                            <button class="btn btn-danger" id="disable-btn">Disable 2-Factor Authentication</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="notifications" role="tabpanel" aria-labelledby="notifications-tab">
+                <div class="card settings-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Notification Settings</h5>
+                        <p>Notification settings would go here (e.g., email preferences, push notifications, etc.)</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // all state views
+        const disabledView = document.getElementById('disabled-view');
+        const setupFlowView = document.getElementById('setup-flow');
+        const enabledView = document.getElementById('enabled-view');
+
+        // dynamic elements
+        const qrCodeImg = setupFlowView.querySelector('.qr-code');
+        const manualKeyCode = setupFlowView.querySelector('.manual-key-code');
+        
+        // buttons/form
+        const startBtn = document.getElementById('start-setup-btn');
+        const cancelBtn = document.getElementById('cancel-setup-btn');
+        const verifyForm = document.getElementById('verify-form');
+        
+
+
+        // --- 2FA PROCESS START ---
+        startBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            
+            startBtn.textContent = 'Generating Key...';
+            startBtn.disabled = true;
+
+
+            try {
+                
+                let data = await fetch('/2fa/generate'); // CALLING SERVER TO GENERATE SECRET & QR CODE
+                data = await data.json();
+                console.log(data);
+                
+                // SHOW CODE & KEY IN DOM
+                qrCodeImg.src = data.qrCodeUrl;
+                manualKeyCode.textContent = data.secret;
+
+                // SHOW SETUP FLOW VIEW
+                disabledView.style.display = 'none';
+                setupFlowView.style.display = 'block';
+                enabledView.style.display = 'none';
+
+            } catch (error) {
+                console.error('2FA Setup Error:', error);
+                alert('Could not start 2FA setup. Please try again.');
+                // Stay on the disabled view if there's an error
+                disabledView.style.display = 'block';
+                setupFlowView.style.display = 'none';
+                enabledView.style.display = 'none';
+            } finally {
+                startBtn.textContent = 'Enable 2-Factor Authentication';
+                startBtn.disabled = false;
+            }
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            // Revert back to the initial disabled view
+            disabledView.style.display = 'block';
+            setupFlowView.style.display = 'none';
+            enabledView.style.display = 'none';
+            // Clear QR code and manual key
+            qrCodeImg.src = "#";
+            manualKeyCode.textContent = "XXXXXXXX";
+        });
+
+        // -- TOTP VERIFICATION --
+        verifyForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const code = document.getElementById('totp-code').value;
+            
+            // client-side input validation
+            if (code.length !== 6 || !/^\d{6}$/.test(code)) {
+                alert('Please enter a valid 6-digit code.');
+                return;
+            }
+
+            const verifyBtn = document.getElementById('verify-and-enable-btn');
+            verifyBtn.textContent = 'Verifying...';
+            verifyBtn.disabled = true;
+            
+            try {
+                // CALL SERVER TO VERIFY THE TOTP CODE
+                const response = await fetch('/2fa/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ otp: code })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok && data.verified) {
+                    // Verification success -> transition to ENABLED view
+                    disabledView.style.display = 'none';
+                    setupFlowView.style.display = 'none';
+                    enabledView.style.display = 'block';
+                    // Clear QR code and manual key
+                    qrCodeImg.src = "#";
+                    manualKeyCode.textContent = "XXXXXXXX";
+                    // alert('Two-Factor Authentication Enabled Successfully!');
+                
+                } else {
+                    alert(data.message || 'Verification failed. Please check your code or try rescanning the QR code.');
+                }
+
+            } catch (error) {
+                console.error('2FA Verification Error:', error);
+                alert('An error occurred during verification.');
+            } finally {
+                verifyBtn.textContent = 'Verify & Enable';
+                verifyBtn.disabled = false;
+            }
+        });
+
+        // Disable button logic (can remain separate)
+        const disableBtn = document.getElementById('disable-btn');
+        disableBtn.addEventListener('click', () => {
+             // In a real app, this would also be an AJAX call
+             if (confirm('Are you sure you want to disable 2-Factor Authentication?')) {
+                const response = fetch('/2fa/disable');
+                const data = response.json();
+                
+                if(response.ok && data.disabled) {
+                    disabledView.style.display = 'block';
+                    enabledView.style.display = 'none';
+                    document.getElementById('totp-code').value = '';
+                    alert('Two-Factor Authentication has been disabled.');
+                } 
+                else {
+                    alert(data.message || 'Failed to disable 2FA. Please try again.');
+                    return;
+                }
+            }
+        });
+
+    });
+</script>
+
+<%- include('partials/footer') %>

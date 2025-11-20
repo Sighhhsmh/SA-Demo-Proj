@@ -1,0 +1,109 @@
+<%- include('partials/header') %>
+
+<%- include('partials/teacher-sidebar') %>
+
+<div class="main-content">
+    <%- include('partials/teacher-topbar') %>
+
+    <main class="content-area">
+        <div class="row g-4 mb-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card color-primary">
+                    <div class="icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div class="info">
+                        <span class="value"><%= stats.totalStudents %></span>
+                        <span class="label">Total Students</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card color-success">
+                    <div class="icon">
+                        <i class="bi bi-collection"></i>
+                    </div>
+                    <div class="info">
+                        <span class="value"><%= stats.classesTaught %></span>
+                        <span class="label">Classes Taught</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card color-danger">
+                    <div class="icon">
+                        <i class="bi bi-marker-tip"></i>
+                    </div>
+                    <div class="info">
+                        <span class="value"><%= stats.needsGrading %></span>
+                        <span class="label">Needs Grading</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card color-warning">
+                    <div class="icon">
+                        <i class="bi bi-calendar-week"></i>
+                    </div>
+                    <div class="info">
+                        <span class="value"><%= stats.meetingsToday %></span>
+                        <span class="label">Meetings Today</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">My Classes</h5>
+                        
+                        <% if (classes && classes.length > 0) { %>
+                            <% classes.forEach(cls => { %>
+                                <div class="course-card align-items-center">
+                                    <img src="<%= cls.imageUrl %>" alt="Course Image">
+                                    <div class="course-info">
+                                        <h6><%= cls.title %></h6>
+                                        <p class="text-muted small"><%= cls.studentCount %> Students</p>
+                                    </div>
+                                    <a href="/class/<%= cls.id %>" class="btn btn-primary btn-sm ms-auto">Go to Class</a>
+                                </div>
+                            <% }) %>
+                        <% } else { %>
+                            <p class="text-muted">You are not assigned to any classes.</p>
+                        <% } %>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Needs Grading</h5>
+                        <ul class="list-group list-group-flush">
+                            
+                            <% if (gradingQueue && gradingQueue.length > 0) { %>
+                                <% gradingQueue.forEach(item => { %>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong><%= item.title %></strong>
+                                            <div class="small text-muted"><%= item.courseCode %></div>
+                                        </div>
+                                        <span class="badge <%= item.badgeClass %> rounded-pill"><%= item.status %></span>
+                                    </li>
+                                <% }) %>
+                            <% } else { %>
+                                <li class="list-group-item">No assignments to grade!</li>
+                            <% } %>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include('partials/footer') %>

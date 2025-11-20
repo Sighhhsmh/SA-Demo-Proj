@@ -1,0 +1,111 @@
+<%- include('partials/header') %>
+
+<%- include('partials/sidebar') %>
+
+<div class="main-content">
+    <%- include('partials/topbar') %>
+
+    <main class="content-area">
+        <div class="row g-4 mb-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card color-primary">
+                    <div class="icon">
+                        <i class="bi bi-book-half"></i>
+                    </div>
+                    <div class="info">
+                        <span class="value"><%= stats.activeCourses %></span>
+                        <span class="label">Active Courses</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card color-warning">
+                    <div class="icon">
+                        <i class="bi bi-file-earmark-check"></i>
+                    </div>
+                    <div class="info">
+                        <span class="value"><%= stats.assignmentsDue %></span>
+                        <span class="label">Assignments Due</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card color-success">
+                    <div class="icon">
+                        <i class="bi bi-award"></i>
+                    </div>
+                    <div class="info">
+                        <span class="value"><%= stats.recentGrade %></span>
+                        <span class="label">Recent Grade</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card color-danger">
+                    <div class="icon">
+                        <i class="bi bi-calendar-week"></i>
+                    </div>
+                    <div class="info">
+                        <span class="value"><%= stats.upcomingEvents %></span>
+                        <span class="label">Upcoming Events</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">My Courses</h5>
+                        
+                        <% if (courses && courses.length > 0) { %>
+                            <% courses.forEach(course => { %>
+                                <div class="course-card">
+                                    <img src="<%= course.imageUrl %>" alt="Course Image">
+                                    <div class="course-info">
+                                        <h6><%= course.title %></h6>
+                                        <p class="text-muted small"><%= course.professor %></p>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-<%= course.progressColor %>" role="progressbar" style="width: '<%= course.progress %>%'" aria-valuenow="<%= course.progress %>" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        <% } else { %>
+                            <p class="text-muted">You are not enrolled in any courses.</p>
+                        <% } %>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Upcoming Assignments</h5>
+                        <ul class="list-group list-group-flush">
+                            
+                            <% if (assignments && assignments.length > 0) { %>
+                                <% assignments.forEach(assignment => { %>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong><%= assignment.title %></strong>
+                                            <div class="small text-muted"><%= assignment.courseCode %></div>
+                                        </div>
+                                        <span class="badge <%= assignment.badgeClass %> rounded-pill"><%= assignment.dueDate %></span>
+                                    </li>
+                                <% }) %>
+                            <% } else { %>
+                                <li class="list-group-item">No upcoming assignments!</li>
+                            <% } %>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include('partials/footer') %>

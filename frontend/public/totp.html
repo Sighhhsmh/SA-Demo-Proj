@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2-Factor Authentication</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base styles */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa; /* Consistent background */
+        }
+
+        /* Centering container */
+        .totp-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* Form styling */
+        .totp-wrapper {
+            width: 100%;
+            max-width: 450px;
+            background: #ffffff;
+            padding: 2.5rem 3rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .totp-wrapper .icon {
+            font-size: 3rem;
+            color: #0d6efd;
+            margin-bottom: 1rem;
+        }
+
+        .totp-wrapper h2 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .totp-wrapper .text-muted {
+            margin-bottom: 2rem;
+        }
+
+        /* 6-digit input field styles */
+        .otp-field-group {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem; /* Space between boxes */
+            margin-bottom: 2rem;
+        }
+
+        .otp-field {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .otp-field:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+            outline: none;
+        }
+
+        /* Style for the verify button */
+        .btn-verify {
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="totp-container">
+        <div class="totp-wrapper">
+            
+            <div class="icon">
+                <i class="bi bi-shield-lock-fill"></i>
+            </div>
+            
+            <h2>2-Factor Authentication</h2>
+            <p class="text-muted">Enter the 6-digit code from your authenticator app.</p>
+
+            <form id="totpForm" action="/verify-totp" method="POST">
+                <div class="otp-field-group" id="otpGroup">
+                    <input name="otp1" type="text" inputmode="numeric" pattern="[0-9]*" class="form-control otp-field" id="otp-1" maxlength="1" data-index="1" required>
+                    <input name="otp2" type="text" inputmode="numeric" pattern="[0-9]*" class="form-control otp-field" id="otp-2" maxlength="1" data-index="2" required>
+                    <input name="otp3" type="text" inputmode="numeric" pattern="[0-9]*" class="form-control otp-field" id="otp-3" maxlength="1" data-index="3" required>
+                    <input name="otp4" type="text" inputmode="numeric" pattern="[0-9]*" class="form-control otp-field" id="otp-4" maxlength="1" data-index="4" required>
+                    <input name="otp5" type="text" inputmode="numeric" pattern="[0-9]*" class="form-control otp-field" id="otp-5" maxlength="1" data-index="5" required>
+                    <input name="otp6" type="text" inputmode="numeric" pattern="[0-9]*" class="form-control otp-field" id="otp-6" maxlength="1" data-index="6" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100 btn-verify" id="verifyButton" disabled>
+                    Verify
+                </button>
+            </form>
+
+            <a href="index.html" class="back-link">
+                <i class="bi bi-arrow-left"></i> Back to Login
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const totpForm = document.getElementById('totpForm');
+            const otpGroup = document.getElementById('otpGroup');
+            const inputs = otpGroup.querySelectorAll('.otp-field');
+            const verifyButton = document.getElementById('verifyButton');
+
+            if (inputs.length > 0) { inputs[0].focus(); }
+
+            const checkAllFields = () => {
+                const allFilled = [...inputs].every(input => input.value.trim().length === 1);
+                verifyButton.disabled = !allFilled;
+            };
+
+            otpGroup.addEventListener('input', (e) => {
+                const target = e.target;
+                let value = target.value;
+                const index = parseInt(target.dataset.index, 10);
+                if (/[^0-9]/.test(value)) {
+                    target.value = value.replace(/[^0-9]/g, '');
+                }
+                value = target.value;
+                if (value.length === 1 && index < inputs.length) {
+                    inputs[index].focus();
+                }
+                if (value.length === 1 && index === inputs.length) {
+                    verifyButton.focus();
+                }
+                checkAllFields();
+            });
+
+            otpGroup.addEventListener('keydown', (e) => {
+                const target = e.target;
+                const index = parseInt(target.dataset.index, 10);
+                if (e.key === 'Backspace' && target.value === '' && index > 1) {
+                    e.preventDefault();
+                    inputs[index - 2].focus();
+                }
+                if (e.key === 'ArrowRight' && index < inputs.length) {
+                    e.preventDefault();
+                    inputs[index].focus();
+                }
+                if (e.key === 'ArrowLeft' && index > 1) {
+                    e.preventDefault();
+                    inputs[index - 2].focus();
+                }
+            });
+
+            inputs[0].addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pastedData = e.clipboardData.getData('text').trim();
+                if (/^\d{6}$/.test(pastedData)) {
+                    inputs.forEach((input, index) => {
+                        input.value = pastedData[index];
+                    });
+                    verifyButton.focus();
+                    checkAllFields();
+                }
+            });
+            
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => input.select());
+            });
+
+            checkAllFields();
+
+            // --- NEW: Handle Form Submission ---
+
+            totpForm.addEventListener('submit', async (e) => {
+                //e.preventDefault(); // Stop the form from navigating
+                
+                // Show loading state
+                verifyButton.disabled = true;
+                verifyButton.innerHTML = `
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Verifying...
+                `;
+
+                
+                //const code = [...inputs].map(input => input.value).join('');
+                
+                
+            });
+        });
+    </script>
+
+</body>
+</html>

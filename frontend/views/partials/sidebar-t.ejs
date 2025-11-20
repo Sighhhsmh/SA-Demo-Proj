@@ -1,0 +1,54 @@
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h5 class="text-white"><i class="bi bi-person-video3"></i> Teacher Portal</h5>
+    </div>
+    <ul class="nav-links">
+        <li class="<%- (currentPage === 'dashboard') ? 'active' : '' %>">
+            <a href="/dashboard-t">
+                <i class="bi bi-grid-fill"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="<%- (currentPage === 'classes') ? 'active' : '' %>">
+            <a href="#">
+                <i class="bi bi-collection-fill"></i>
+                <span>My Classes</span>
+            </a>
+        </li>
+        <li class="<%- (currentPage === 'gradebook') ? 'active' : '' %>">
+            <a href="#">
+                <i class="bi bi-pencil-square"></i>
+                <span>Gradebook</span>
+            </a>
+        </li>
+        <li class="<%- (currentPage === 'schedule') ? 'active' : '' %>">
+            <a href="#">
+                <i class="bi bi-calendar-event"></i>
+                <span>Schedule</span>
+            </a>
+        </li>
+        <li class="<%- (currentPage === 'roster') ? 'active' : '' %>">
+            <a href="#">
+                <i class="bi bi-people-fill"></i>
+                <span>Student Roster</span>
+            </a>
+        </li>
+        <li class="<%- (currentPage === 'messages') ? 'active' : '' %>">
+            <a href="#">
+                <i class="bi bi-chat-left-dots"></i>
+                <span>Messages</span>
+            </a>
+        </li>
+        <li class="<%- (currentPage === 'settings') ? 'active' : '' %>">
+            <a href="/settings">
+                <i class="bi bi-gear-fill"></i>
+                <span>Settings</span>
+            </a>
+        </li>
+    </ul>
+    <div class="logout-link">
+        <a href="/logout"> <i class="bi bi-box-arrow-left"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+</div>
