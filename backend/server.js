@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use(session({
-    secret: process.env['Session-Secret'],
+    secret: process.env['Session_Secret'],
     resave: false,
     saveUninitialized: false
 }));
@@ -481,3 +481,4 @@ app.listen(PORT, () => console.log("Server running on port", PORT));
     //     gradingQueue: gradingData
 
     // });
+
